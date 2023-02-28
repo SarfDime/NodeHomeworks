@@ -1,17 +1,31 @@
 import colors from "colors"
-import http from "http"
+import express from "express";
+const app = express();
 
-const hostname = '127.0.0.1';
-const port = 3000;
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello World');
-});
+const PORT = 3000;
 
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+app.get('/api/createdUsers', (req, res) => {
+    res.send(createdUsers);
+})
+
+app.post('/api/createdUsers', (req, res) => {
+    console.log(req.body);
+    res.send(req.body);
+})
+
+app.get('/', (req, res) => {
+    res.sendStatus(404);
+})
+
+app.post('/', (req, res) => {
+    res.sendStatus(200);
+})
+
+app.listen(PORT, () => {
+    console.log(`App listening on ${PORT}`);
 });
 
 let createdUsers = [{ role: "admin", fullname: "John Doe", username: "qwerty", password: "123qwe" }, { role: "client", fullName: "Bob Bobski", username: "asdasd", password: "zxczxc" }];
@@ -34,6 +48,6 @@ function login(array, usname, pass) {
     console.log("Log in Failure".red.italic.bold)
 }
 
-login(createdUsers, "qwerty","123qwe")
-login(createdUsers, "qwerwty","123qwe")
+login(createdUsers, "qwerty", "123qwe")
+login(createdUsers, "qwerwty", "123qwe")
 console.log(createdUsers)
