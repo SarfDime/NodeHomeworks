@@ -1,0 +1,17 @@
+[
+    {
+        "id": 3,
+        "name": "Jack Smith",
+        "done": true
+    },
+    {
+        "id": "88202d79-5842-4d18-ab49-1f80d96f1f55",
+        "fullname": "John Doe",
+        "password": "johndoe@example.com"
+    },
+    {
+        "id": "353505e7-94eb-4afa-8085-97e12d6766c1",
+        "fullname": "John Doe",
+        "password": "johndoe@example.com"
+    }
+]
