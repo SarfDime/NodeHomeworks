@@ -1,7 +1,5 @@
 //// Module Imports
 import colors from "colors"
-import EventEmitter from "events"
-const eventEmitter = new EventEmitter();
 
 //// File Imports 
 import { getPath as pathGetter, fsModules as fs , objectManager as objManager, Student, login, getFileType as gft} from './app.js';
