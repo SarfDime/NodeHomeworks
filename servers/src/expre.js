@@ -14,6 +14,9 @@ app.get('/api/createdUsers', (req, res) => {
 })
 
 app.post('/api/createdUsers', (req, res) => {
+
+    // { role: "admin", fullname: "John Doe", username: "qwerty", password: "123qwe" } vakov data post
+
     createdUsers.push(req.body)
     res.send(createdUsers);
 })
