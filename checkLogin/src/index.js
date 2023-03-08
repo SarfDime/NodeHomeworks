@@ -12,8 +12,8 @@ app.get('/api/createdUsers', (req, res) => {
 })
 
 app.post('/api/createdUsers', (req, res) => {
-    console.log(req.body);
-    res.send(req.body);
+    createdUsers.push(req.body)
+    res.send(createdUsers);
 })
 
 app.get('/', (req, res) => {
