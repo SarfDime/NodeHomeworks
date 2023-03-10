@@ -16,8 +16,12 @@ router.get('/api/read', async (req, res) => {
 
 router.get('/api/read/:id', async (req, res) => {
     let data = await fs.read(filePath, gft(filePath))
+    if(data.length === 0){
+        res.send('There are no products')
+        return
+    }
     let obj = await objMngr.readObject(data, req.params.id);
-    if(obj[0] === null) {
+    if (obj[0] === null) {
         res.send(obj[1])
         return
     }
@@ -27,6 +31,10 @@ router.get('/api/read/:id', async (req, res) => {
 router.get('/api/buy', async (req, res) => {
     const cartPath = getPath('cart.json', dirPath, "..")
     const data = await fs.read(filePath, gft(filePath))
+    if(data.length === 0){
+        res.send('There are no products')
+        return
+    }
     let cartData = await fs.read(cartPath, gft(cartPath))
     if (cartData.length === 0) {
         res.send('Cart is empty')
@@ -48,6 +56,18 @@ router.get('/api/buy', async (req, res) => {
     await fs.write(cartPath, JSON.stringify(cartData, null, 2))
 })
 
+router.get('/api/cart/clear', async (req, res) => {
+    const cartPath = getPath('cart.json', dirPath, "..")
+    let cartData = await fs.read(cartPath, gft(cartPath))
+    if (cartData.length === 0) {
+        request.send('Cart already empty')
+        return
+    }
+    cartData = []
+    await fs.write(cartPath, JSON.stringify(cartData, null, 2))
+    res.send('Cart cleared')
+})
+
 router.get('/', (req, res) => {
     res.sendStatus(200)
 })
@@ -60,6 +80,10 @@ router.get("*", (req, res) => {
 
 router.post('/api/create', async (req, res) => {
     let data = await fs.read(filePath, gft(filePath))
+    if(data.length === 0){
+        res.send('There are no products')
+        return
+    }
     const newProduct = new Product(req.body.name, req.body.price, req.body.description, req.body.stock)
     if (newProduct === undefined) {
         res.send('Please provide a new product properly')
@@ -81,6 +105,10 @@ router.post('/api/create', async (req, res) => {
 router.post('/api/update/:id', async (req, res) => {
     const updateData = req.body
     let data = await fs.read(filePath, gft(filePath))
+    if(data.length === 0){
+        res.send('There are no products')
+        return
+    }
     const obj = await objMngr.changeObject(data, req.params.id, updateData.key, updateData.value)
     console.log(obj)
     if (obj[0] === null) {
@@ -101,10 +129,13 @@ router.post('/api/update/:id', async (req, res) => {
 // }   
 
 router.post('/api/add/:id', async (req, res) => {
-    console.log("dime")
     const cartPath = getPath('cart.json', dirPath, "..")
     let cartData = await fs.read(cartPath, gft(cartPath))
     const data = await fs.read(filePath, gft(filePath))
+    if(data.length === 0){
+        res.send('There are no products')
+        return
+    }
     let obj = data.find(e => e.id == req.params.id)
     if (obj === undefined) {
         res.send('Product not found')
@@ -125,13 +156,33 @@ router.post('/api/add/:id', async (req, res) => {
 
 router.post('/api/delete/:id', async (req, res) => {
     let data = await fs.read(filePath, gft(filePath))
+    if(data.length === 0){
+        res.send('There are no products')
+        return
+    }
     let obj = await objMngr.deleteObject(data, req.params.id)
-    if(obj[0] === null){
+    if (obj[0] === null) {
         res.send(obj[1])
         return
     }
     await fs.write(filePath, JSON.stringify(data, null, 2))
     data = await fs.read(filePath, gft(filePath))
+    res.send(obj[0])
+})
+
+router.post('/api/cart/delete/:id', async (req, res) => {
+    const cartPath = getPath('cart.json', dirPath, "..")
+    let cartData = await fs.read(cartPath, gft(cartPath))
+    if (cartData.length === 0) {
+        request.send('Cart already empty')
+        return
+    }
+    let obj = await objMngr.deleteObject(cartData, req.params.id)
+    if (obj[0] === null) {
+        res.send(obj[1])
+        return
+    }
+    await fs.write(cartPath, JSON.stringify(data, null, 2))
     res.send(obj[0])
 })
 
