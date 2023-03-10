@@ -12,7 +12,7 @@ let logfilePath = getPath(logfileName, "db", "..");
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(async (req, res, next) => {
-    await fs.append(logfilePath, "Server accessed at " + new Date());
+    await fs.append(logfilePath, "\nServer accessed at " + new Date());
     next();
 })
 

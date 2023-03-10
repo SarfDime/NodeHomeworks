@@ -58,14 +58,12 @@ router.post('/api/create', async (req, res) => {
     res.send(data)
 })
 
-/*
-{   Example for create
-    "name": "Created Product",
-    "price": 7850,
-    "description": "Created with api",
-    "stock": 52
-}   
-*/
+// {   Example for create
+//     "name": "Created Product",
+//     "price": 7850,
+//     "description": "Created with api",
+//     "stock": 52
+// }   
 
 router.post('/api/update/:id', async (req, res) => {
     const updateData = req.body
@@ -76,12 +74,11 @@ router.post('/api/update/:id', async (req, res) => {
     res.send(data)
 })
 
-/*
-{   Example for update
-    "key": "description",
-    "value": "I have been updated"
-}   
-*/
+// {   Example for update
+//     "key": "description",
+//     "value": "I have been updated"
+// }   
+
 
 router.post('/api/add/:id', async (req, res) => {
     console.log("dime")

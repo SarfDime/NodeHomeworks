@@ -21,10 +21,24 @@
     "stock": 9
   },
   {
-    "id": 1,
-    "fullname": "Created Product",
-    "price": 7850,
+    "fullname": "Created Product 3",
+    "price": 850,
     "description": "Created with api",
-    "stock": 52
+    "stock": 32,
+    "id": 5
+  },
+  {
+    "fullname": "Created Product 4",
+    "price": 850,
+    "description": "Created with api",
+    "stock": 32,
+    "id": "4669ace9-e47f-4d71-9ddc-a2768de1b944"
+  },
+  {
+    "fullname": "Created Product 5",
+    "price": 850,
+    "description": "Created with api",
+    "stock": 32,
+    "id": "dacd926f-a929-4c9c-bac7-dbb1f8c89764"
   }
 ]

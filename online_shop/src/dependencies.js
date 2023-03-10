@@ -1,6 +1,7 @@
 import fsA from 'fs/promises';
 import { fileURLToPath as fp } from 'url';
 import path from 'path';
+import { v4 as idV4 } from 'uuid';
 
 export function getFileType(filePath) {
     const type = filePath.slice(filePath.lastIndexOf('.'));
@@ -79,14 +80,12 @@ export const objectManager = {
 }
 
 export class Product {
-    static id = 0
     constructor(fullname, price, description, stock) {
-        Product.id++
-        this.id = Product.id
         this.fullname = fullname
         this.price = price
         this.description = description
         this.stock = stock
+        this.id = idV4()
     }
 }
 
