@@ -4,41 +4,27 @@
     "name": "Product One",
     "price": 300,
     "description": "Product One",
-    "stock": 9
+    "stock": 8
   },
   {
     "id": 78,
     "name": "Product 78",
     "price": 350,
     "description": "Product 78",
-    "stock": 3
+    "stock": null
   },
   {
     "id": 73,
     "name": "Product 73",
     "price": 350,
-    "description": "I have been updated",
-    "stock": 9
+    "description": "Blas",
+    "stock": 8
   },
   {
     "fullname": "Created Product 3",
     "price": 850,
-    "description": "Created with api",
-    "stock": 32,
+    "description": "Bla",
+    "stock": 31,
     "id": 5
-  },
-  {
-    "fullname": "Created Product 4",
-    "price": 850,
-    "description": "Created with api",
-    "stock": 32,
-    "id": "4669ace9-e47f-4d71-9ddc-a2768de1b944"
-  },
-  {
-    "fullname": "Created Product 5",
-    "price": 850,
-    "description": "Created with api",
-    "stock": 32,
-    "id": "dacd926f-a929-4c9c-bac7-dbb1f8c89764"
   }
 ]

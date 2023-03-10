@@ -11,32 +11,41 @@ let filePath = getPath(fileName, dirPath, "..")
 
 router.get('/api/read', async (req, res) => {
     let data = await fs.read(filePath, gft(filePath))
-    res.send(data)
+    data.length === 0 ? (res.send('There are no products')) : res.send(data)
 })
 
 router.get('/api/read/:id', async (req, res) => {
     let data = await fs.read(filePath, gft(filePath))
-    let obj = data.find(e => e.id == req.params.id);
-    res.send(obj)
+    let obj = await objMngr.readObject(data, req.params.id);
+    if(obj[0] === null) {
+        res.send(obj[1])
+        return
+    }
+    res.send(obj[0])
 })
 
 router.get('/api/buy', async (req, res) => {
     const cartPath = getPath('cart.json', dirPath, "..")
     const data = await fs.read(filePath, gft(filePath))
     let cartData = await fs.read(cartPath, gft(cartPath))
+    if (cartData.length === 0) {
+        res.send('Cart is empty')
+        return
+    }
     cartData.forEach(el => {
         const index = data.findIndex(e => e.id === el.id)
         if (index !== -1) {
             if (data[index].stock <= 1) {
                 data[index].stock = null
+                return
             }
             data[index].stock--
         }
     });
+    res.send(cartData)
     await fs.write(filePath, JSON.stringify(data, null, 2))
     cartData = []
     await fs.write(cartPath, JSON.stringify(cartData, null, 2))
-    res.send(cartData)
 })
 
 router.get('/', (req, res) => {
@@ -51,7 +60,11 @@ router.get("*", (req, res) => {
 
 router.post('/api/create', async (req, res) => {
     let data = await fs.read(filePath, gft(filePath))
-    const newProduct = new Product(req.body.name, req.body.price, req.body.description, req.body.stock);
+    const newProduct = new Product(req.body.name, req.body.price, req.body.description, req.body.stock)
+    if (newProduct === undefined) {
+        res.send('Please provide a new product properly')
+        return
+    }
     data.push(newProduct)
     await fs.write(filePath, JSON.stringify(data, null, 2))
     data = await fs.read(filePath, gft(filePath))
@@ -68,10 +81,18 @@ router.post('/api/create', async (req, res) => {
 router.post('/api/update/:id', async (req, res) => {
     const updateData = req.body
     let data = await fs.read(filePath, gft(filePath))
-    objMngr.changeObject(data, req.params.id, updateData.key, updateData.value)
+    const obj = await objMngr.changeObject(data, req.params.id, updateData.key, updateData.value)
+    console.log(obj)
+    if (obj[0] === null) {
+        res.send(obj[1])
+        return
+    }
+    if (obj[0] === undefined) {
+        res.send(obj[1])
+        return
+    }
     await fs.write(filePath, JSON.stringify(data, null, 2))
-    data = await fs.read(filePath, gft(filePath))
-    res.send(data)
+    res.send(obj[0])
 })
 
 // {   Example for update
@@ -79,13 +100,24 @@ router.post('/api/update/:id', async (req, res) => {
 //     "value": "I have been updated"
 // }   
 
-
 router.post('/api/add/:id', async (req, res) => {
     console.log("dime")
     const cartPath = getPath('cart.json', dirPath, "..")
     let cartData = await fs.read(cartPath, gft(cartPath))
     const data = await fs.read(filePath, gft(filePath))
-    let obj = data.find(e => e.id == req.params.id);
+    let obj = data.find(e => e.id == req.params.id)
+    if (obj === undefined) {
+        res.send('Product not found')
+        return
+    }
+    if (obj.stock === null) {
+        res.send('Product is out of stock')
+        return
+    }
+    if (cartData.some(e => e.id === obj.id)) {
+        res.send('Product already in cart')
+        return
+    }
     cartData.push(obj)
     await fs.write(cartPath, JSON.stringify(cartData, null, 2))
     res.send(cartData)
@@ -93,10 +125,14 @@ router.post('/api/add/:id', async (req, res) => {
 
 router.post('/api/delete/:id', async (req, res) => {
     let data = await fs.read(filePath, gft(filePath))
-    objMngr.deleteObject(data, req.params.id)
+    let obj = await objMngr.deleteObject(data, req.params.id)
+    if(obj[0] === null){
+        res.send(obj[1])
+        return
+    }
     await fs.write(filePath, JSON.stringify(data, null, 2))
     data = await fs.read(filePath, gft(filePath))
-    res.send(data)
+    res.send(obj[0])
 })
 
 export default router
