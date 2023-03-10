@@ -51,11 +51,21 @@ router.get("*", (req, res) => {
 
 router.post('/api/create', async (req, res) => {
     let data = await fs.read(filePath, gft(filePath))
-    data.push(req.body)
+    const newProduct = new Product(req.body.name, req.body.price, req.body.description, req.body.stock);
+    data.push(newProduct)
     await fs.write(filePath, JSON.stringify(data, null, 2))
     data = await fs.read(filePath, gft(filePath))
     res.send(data)
 })
+
+/*
+{   Example for create
+    "name": "Created Product",
+    "price": 7850,
+    "description": "Created with api",
+    "stock": 52
+}   
+*/
 
 router.post('/api/update/:id', async (req, res) => {
     const updateData = req.body
@@ -67,10 +77,10 @@ router.post('/api/update/:id', async (req, res) => {
 })
 
 /*
-    {
-        "key": "description",
-        "value": "I have been updated"
-    }  Example  for update
+{   Example for update
+    "key": "description",
+    "value": "I have been updated"
+}   
 */
 
 router.post('/api/add/:id', async (req, res) => {

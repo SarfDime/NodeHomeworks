@@ -79,12 +79,14 @@ export const objectManager = {
 }
 
 export class Product {
-    static id = 0;
-    constructor(fullname, password) {
+    static id = 0
+    constructor(fullname, price, description, stock) {
         Product.id++
         this.id = Product.id
-        this.fullname = fullname;
-        this.password = password;
+        this.fullname = fullname
+        this.price = price
+        this.description = description
+        this.stock = stock
     }
 }
 

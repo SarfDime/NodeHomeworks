@@ -19,5 +19,12 @@
     "price": 350,
     "description": "I have been updated",
     "stock": 9
+  },
+  {
+    "id": 1,
+    "fullname": "Created Product",
+    "price": 7850,
+    "description": "Created with api",
+    "stock": 52
   }
 ]
